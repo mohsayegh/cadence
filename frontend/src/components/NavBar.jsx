@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 // handling the active state function
 const linkStyles = ({ isActive }) =>
-  `text-sm font-medium pb-1 border-b-2 transition-colors ${
+  `text-sm font-medium pb-1 border-b-2 transition-colors  ${
     isActive
       ? "text-paper border-ember"
       : "text-fog border-transparent hover:text-paper"
@@ -25,7 +25,7 @@ const NavBar = () => {
 
       <ul className="flex gap-8 justify-self-end">
         <li>
-          <NavLink to="/" className={linkStyles}>
+          <NavLink to="/" className={linkStyles + "whitespace-nowrap"}>
             Dashboard
           </NavLink>
         </li>

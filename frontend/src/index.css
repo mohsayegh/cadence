@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
-/* the colors for tailwind */
+
 @theme {
   --color-ink: #14161C;
   --color-surface: #1E212B;
@@ -10,3 +10,8 @@
   --color-ember: #E8834E;
 }
 
+@layer base {
+  body {
+    @apply bg-ink text-paper;
+  }
+}
