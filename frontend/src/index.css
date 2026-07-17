@@ -1,1 +1,12 @@
 @import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+/* the colors for tailwind */
+@theme {
+  --color-ink: #14161C;
+  --color-surface: #1E212B;
+  --color-fog: #8B92A4;
+  --color-paper: #F1EFEA;
+  --color-ember: #E8834E;
+}
+

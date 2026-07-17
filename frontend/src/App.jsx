@@ -8,17 +8,17 @@ import LoginPage from "./pages/LoginPage.jsx";
 import SignUpPage from "./pages/SignUpPage.jsx";
 
 const App = () => {
-  <Routes>
-    <Route path="/" element={<DashboardPage />} />
-    <Route path="/habits" element={<HabitsPage />} />
-    <Route path="/goals" element={<GoalsPage />} />
-    <Route path="/tasks" element={<TasksPages />} />
-    <Route path="/login" element={<LoginPage />} />
-    <Route path="/signup" element={<SignUpPage />} />
-  </Routes>;
   return (
     <>
       <NavBar />
+      <Routes>
+        <Route path="/" element={<DashboardPage />} />
+        <Route path="/habits" element={<HabitsPage />} />
+        <Route path="/goals" element={<GoalsPage />} />
+        <Route path="/tasks" element={<TasksPages />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
+      </Routes>
     </>
   );
 };
