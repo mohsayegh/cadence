@@ -1,5 +1,6 @@
 import { useState } from "react";
 import HabitTracker from "../components/HabitTracker";
+import AddHabitModal from "../components/AddHabitModal";
 
 const HabitsPage = () => {
   const [habits, setHabits] = useState([
@@ -7,20 +8,45 @@ const HabitsPage = () => {
       id: 1,
       name: "Drink water",
       datesDone: ["2026-07-15", "2026-07-16", "2026-07-17"],
+      repetition: { period: "daily", target: 1 },
     },
-    { id: 2, name: "Read", datesDone: ["2026-07-14", "2026-07-17"] },
-    { id: 3, name: "Workout", datesDone: [] },
+    {
+      id: 2,
+      name: "Read",
+      datesDone: ["2026-07-14", "2026-07-17"],
+      repetition: { period: "weekly", target: 3 },
+    },
+    {
+      id: 3,
+      name: "Workout",
+      datesDone: [],
+      repetition: { period: "weekly", target: 4 },
+    },
   ]);
+  const [showModal, setShowModal] = useState(false);
 
-  function markDone(habitId) {
+  function toggleDone(habitId) {
     const today = new Date().toISOString().split("T")[0];
     setHabits(
       habits.map((h) => {
         if (h.id !== habitId) return h;
-        if (h.datesDone.includes(today)) return h;
-        return { ...h, datesDone: [...h.datesDone, today] };
+        const isDone = h.datesDone.includes(today);
+        return {
+          ...h,
+          datesDone: isDone
+            ? h.datesDone.filter((d) => d !== today)
+            : [...h.datesDone, today],
+        };
       }),
     );
+  }
+
+  function addHabit(name, repetition) {
+    setHabits([...habits, { id: Date.now(), name, datesDone: [], repetition }]);
+  }
+
+  function deleteHabit(habitId) {
+    setHabits(habits.filter((h) => h.id !== habitId));
   }
 
   const today = new Date().toISOString().split("T")[0];
@@ -43,14 +69,23 @@ const HabitsPage = () => {
             key={habit.id}
             name={habit.name}
             datesDone={habit.datesDone}
-            onMarkDone={() => markDone(habit.id)}
+            repetition={habit.repetition}
+            onToggleDone={() => toggleDone(habit.id)}
+            onDelete={() => deleteHabit(habit.id)}
           />
         ))}
       </div>
 
-      <button className="mt-6 w-full rounded-2xl border border-dashed border-fog/30 text-fog py-4 hover:border-ember/50 hover:text-ember transition-colors">
+      <button
+        onClick={() => setShowModal(true)}
+        className="mt-6 w-full rounded-2xl border border-dashed border-fog/30 text-fog py-4 hover:border-ember/50 hover:text-ember transition-colors"
+      >
         + New habit
       </button>
+
+      {showModal && (
+        <AddHabitModal onAdd={addHabit} onClose={() => setShowModal(false)} />
+      )}
     </div>
   );
 };
