@@ -1,4 +1,7 @@
-import calculateStreak from "../utils/calculateStreak";
+import {
+  calculatePeriodStreak,
+  currentPeriodProgress,
+} from "../utils/periodStreak";
 
 const HabitTracker = ({
   name,
@@ -7,7 +10,8 @@ const HabitTracker = ({
   onToggleDone,
   onDelete,
 }) => {
-  const streak = calculateStreak(datesDone);
+  const streak = calculatePeriodStreak(datesDone, repetition);
+  const progress = currentPeriodProgress(datesDone, repetition);
   const today = new Date().toISOString().split("T")[0];
   const doneToday = datesDone.includes(today);
 
@@ -21,7 +25,7 @@ const HabitTracker = ({
   const targetLabel =
     repetition.period === "daily"
       ? "Daily"
-      : `${repetition.target}x per ${repetition.period.replace("ly", "")}`;
+      : `${progress}/${repetition.target} this ${repetition.period.replace("ly", "")}`;
 
   return (
     <div className="group relative flex items-center justify-between gap-6 rounded-2xl bg-surface border border-white/5 px-6 py-5 hover:border-ember/30 transition-colors">
@@ -39,7 +43,11 @@ const HabitTracker = ({
         <div>
           <h2 className="text-paper font-medium">{name}</h2>
           <p className="text-fog text-sm">
-            🔥 {streak} day{streak === 1 ? "" : "s"} streak · {targetLabel}
+            🔥 {streak}{" "}
+            {repetition.period === "daily"
+              ? "day"
+              : repetition.period.replace("ly", "")}
+            {streak === 1 ? "" : "s"} streak · {targetLabel}
           </p>
         </div>
       </div>

@@ -2,52 +2,8 @@ import { useState } from "react";
 import HabitTracker from "../components/HabitTracker";
 import AddHabitModal from "../components/AddHabitModal";
 
-const HabitsPage = () => {
-  const [habits, setHabits] = useState([
-    {
-      id: 1,
-      name: "Drink water",
-      datesDone: ["2026-07-15", "2026-07-16", "2026-07-17"],
-      repetition: { period: "daily", target: 1 },
-    },
-    {
-      id: 2,
-      name: "Read",
-      datesDone: ["2026-07-14", "2026-07-17"],
-      repetition: { period: "weekly", target: 3 },
-    },
-    {
-      id: 3,
-      name: "Workout",
-      datesDone: [],
-      repetition: { period: "weekly", target: 4 },
-    },
-  ]);
+const HabitsPage = ({ habits, onToggleDone, onAddHabit, onDeleteHabit }) => {
   const [showModal, setShowModal] = useState(false);
-
-  function toggleDone(habitId) {
-    const today = new Date().toISOString().split("T")[0];
-    setHabits(
-      habits.map((h) => {
-        if (h.id !== habitId) return h;
-        const isDone = h.datesDone.includes(today);
-        return {
-          ...h,
-          datesDone: isDone
-            ? h.datesDone.filter((d) => d !== today)
-            : [...h.datesDone, today],
-        };
-      }),
-    );
-  }
-
-  function addHabit(name, repetition) {
-    setHabits([...habits, { id: Date.now(), name, datesDone: [], repetition }]);
-  }
-
-  function deleteHabit(habitId) {
-    setHabits(habits.filter((h) => h.id !== habitId));
-  }
 
   const today = new Date().toISOString().split("T")[0];
   const doneTodayCount = habits.filter((h) =>
@@ -70,8 +26,8 @@ const HabitsPage = () => {
             name={habit.name}
             datesDone={habit.datesDone}
             repetition={habit.repetition}
-            onToggleDone={() => toggleDone(habit.id)}
-            onDelete={() => deleteHabit(habit.id)}
+            onToggleDone={() => onToggleDone(habit.id)}
+            onDelete={() => onDeleteHabit(habit.id)}
           />
         ))}
       </div>
@@ -84,7 +40,7 @@ const HabitsPage = () => {
       </button>
 
       {showModal && (
-        <AddHabitModal onAdd={addHabit} onClose={() => setShowModal(false)} />
+        <AddHabitModal onAdd={onAddHabit} onClose={() => setShowModal(false)} />
       )}
     </div>
   );
