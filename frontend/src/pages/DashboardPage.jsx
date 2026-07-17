@@ -6,8 +6,6 @@
 3- Show the Tasks for today 
 4- Show a calender with tasks 
 */
-const DashboardPage = (
-
-) => {};
+const DashboardPage = () => {};
 
 export default DashboardPage;

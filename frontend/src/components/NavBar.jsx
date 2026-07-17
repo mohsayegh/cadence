@@ -8,15 +8,6 @@ const linkStyles = ({ isActive }) =>
       : "text-fog border-transparent hover:text-paper"
   }`;
 
-
-const [menuOpen, setMenuOpen] = useState(false);
-
-const burgerMenu = () => {
-    
-};
-
-
-
 const NavBar = () => {
   // managing the dark mode function
   const [isDark, setIsDark] = useState(
@@ -28,11 +19,8 @@ const NavBar = () => {
     localStorage.setItem("theme", isDark ? "dark" : "light");
   }, [isDark]);
 
-  // burger menu functions
-  
-
   return (
-    <nav className="bg-surface/80 backdrop-blur-md border-b border-white/5 sticky top-0 z-50 px-8 py-4 flex items-center justify-between grid-cols-3">
+    <nav className="bg-surface/80 backdrop-blur-md border-b border-white/5 sticky top-0 z-50 px-8 py-4 items-center justify-between grid grid-cols-3">
       <span className="text-paper font-serif text-xl">Cadence</span>
 
       <ul className="flex gap-8 justify-self-end">
@@ -57,17 +45,21 @@ const NavBar = () => {
           </NavLink>
         </li>
       </ul>
-      <div className="flex items-center gap-8">
+
+      <div className="flex items-center gap-4 justify-self-end cursor-pointer">
         <button onClick={() => setIsDark(!isDark)}>
           {isDark ? "☀️" : "🌙"}
         </button>
-        <button className="w-8 h-8 rounded-full bg-ember/20 border border-ember/40 overflow-hidden">
+
+        <button className="w-8 h-8 rounded-full bg-ember/20 border border-ember/40 overflow-hidden cursor-pointer">
           <img
             src="/placeholder-avatar.png"
             alt="Profile"
             className="w-full h-full object-cover"
           />
         </button>
+
+        <button className="md:hidden cursor-pointer">☰</button>
       </div>
     </nav>
   );
