@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, .dark *));
+/* @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   --color-ink: #14161C;
@@ -14,4 +14,4 @@
   body {
     @apply bg-ink text-paper;
   }
-}
+} */
