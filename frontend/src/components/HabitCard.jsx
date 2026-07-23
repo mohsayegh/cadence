@@ -1,7 +1,7 @@
 function HabitCard({ habit, onToggle, onDelete }) {
   return (
     <div
-      className={`group flex items-center gap-3 rounded-xl border border-stone-200 px-4 py-3 transition-colors ${
+      className={`group flex items-center gap-3 rounded-xl border border-stone-200 px-4 py-3 transition-all duration-300  ${
         habit.isDone ? "bg-stone-50" : "bg-white"
       }`}
     >
