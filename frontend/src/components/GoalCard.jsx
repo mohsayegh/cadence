@@ -14,6 +14,9 @@ function GoalCard({ goal, onIncrement, onDelete }) {
         >
           {goal.title}
         </span>
+        {goal.dueDate && (
+          <span className="text-xs text-stone-400">due {goal.dueDate}</span>
+        )}
         <button
           onClick={() => onDelete(goal.id)}
           aria-label={`Delete ${goal.title}`}

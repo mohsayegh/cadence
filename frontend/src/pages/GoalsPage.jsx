@@ -5,6 +5,7 @@ function GoalsPage() {
   const [goals, setGoals] = useState([]);
   const [newTitle, setNewTitle] = useState("");
   const [newTarget, setNewTarget] = useState("");
+  const [newDueDate, setNewDueDate] = useState("");
 
   useEffect(() => {
     async function loadGoals() {
@@ -38,7 +39,7 @@ function GoalsPage() {
     const res = await fetch("http://127.0.0.1:8000/goals", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title, target }),
+      body: JSON.stringify({ title, target, dueDate: newDueDate || null }),
     });
 
     const created = await res.json();
@@ -89,6 +90,12 @@ function GoalsPage() {
           placeholder="Target"
           onChange={(e) => setNewTarget(e.target.value)}
           className="w-20 rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-900 placeholder:text-stone-400 focus:border-stone-900 focus:outline-none"
+        />
+        <input
+          type="date"
+          value={newDueDate}
+          onChange={(e) => setNewDueDate(e.target.value)}
+          className="rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-900 focus:border-stone-900 focus:outline-none"
         />
         <button
           onClick={handleAdd}
