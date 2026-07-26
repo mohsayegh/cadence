@@ -1,13 +1,18 @@
 import HabitCard from "../components/HabitCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function HabitsPage() {
-  const [habits, setHabits] = useState([
-    { id: 1, name: "Prayer", isDone: true, streak: 5 },
-    { id: 2, name: "Eat Healthy", isDone: false, streak: 2 },
-    { id: 3, name: "GYM", isDone: true, streak: 0 },
-    { id: 4, name: "Programming", isDone: false, streak: 3 },
-  ]);
+  const [habits, setHabits] = useState([]);
+
+  useEffect(() => {
+    async function loadHabits() {
+      const res = await fetch("http://127.0.0.1:8000/habits");
+      const data = await res.json();
+      setHabits(data);
+    }
+    loadHabits();
+  }, []);
+
   const [newName, setNewName] = useState("");
   const sortedHabits = [...habits].sort(
     (a, b) => Number(a.isDone) - Number(b.isDone),
@@ -17,22 +22,33 @@ function HabitsPage() {
     ? Math.round((doneCount / habits.length) * 100)
     : 0;
 
-  function handleToggle(id) {
-    setHabits(
-      habits.map((habit) =>
-        habit.id === id ? { ...habit, isDone: !habit.isDone } : habit,
-      ),
-    );
+  async function handleToggle(id) {
+    const res = await fetch(`http://127.0.0.1:8000/habits/${id}/toggle`, {
+      method: "PATCH",
+    });
+    const updated = await res.json();
+    setHabits(habits.map((habit) => (habit.id === id ? updated : habit)));
   }
 
-  function handleDelete(id) {
+  async function handleDelete(id) {
+    await fetch(`http://127.0.0.1:8000/habits/${id}`, {
+      method: "DELETE",
+    });
     setHabits(habits.filter((habit) => habit.id !== id));
   }
 
-  function handleAdd() {
+  async function handleAdd() {
     const name = newName.trim();
     if (!name) return;
-    setHabits([...habits, { id: Date.now(), name, isDone: false, streak: 0 }]);
+
+    const res = await fetch("http://127.0.0.1:8000/habits", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name }),
+    });
+
+    const updated = await res.json();
+    setHabits([...habits, updated]);
     setNewName("");
   }
 
