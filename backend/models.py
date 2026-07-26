@@ -28,3 +28,12 @@ class GoalCreate(BaseModel):
     title: str
     target: int
     dueDate: date | None = None
+    
+    
+class Task(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    title: str
+    isDone: bool
+
+class TaskCreate(BaseModel):
+    title: str

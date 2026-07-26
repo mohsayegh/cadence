@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router";
 import HabitsPage from "./pages/HabitsPage";
 import Dashboard from "./pages/DashboardPage";
 import GoalsPage from "./pages/GoalsPage";
-import TasksPage from "./pages/TasksPages";
+import TasksPage from "./pages/TasksPage";
 import Layout from "./components/Layout";
 
 const App = () => {

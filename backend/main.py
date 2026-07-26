@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import SQLModel
 from database import engine
-from routers import habits, goals
+from routers import habits, goals, tasks
 
 app = FastAPI()
 
@@ -20,5 +20,9 @@ def on_startup():
     SQLModel.metadata.create_all(engine)
 
 
+
+
+
+app.include_router(tasks.router)
 app.include_router(habits.router)
 app.include_router(goals.router)

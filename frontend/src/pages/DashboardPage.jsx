@@ -1,24 +1,36 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import StatCard from "../components/StatCard";
 
-// fake for now, replaced with real state later
-const summary = {
-  habitsTotal: 4,
-  habitsDone: 2,
-  longestStreak: 5,
-  goalsActive: 3,
-};
-
 function DashboardPage() {
+  const [habits, setHabits] = useState([]);
+  const [goals, setGoals] = useState([]);
+
   const today = new Date().toLocaleDateString("en-US", {
     weekday: "long",
     month: "long",
     day: "numeric",
   });
 
-  const percent = summary.habitsTotal
-    ? Math.round((summary.habitsDone / summary.habitsTotal) * 100)
+  useEffect(() => {
+    async function loadData() {
+      const [habitsRes, goalsRes] = await Promise.all([
+        fetch("http://127.0.0.1:8000/habits"),
+        fetch("http://127.0.0.1:8000/goals"),
+      ]);
+      setHabits(await habitsRes.json());
+      setGoals(await goalsRes.json());
+    }
+    loadData();
+  }, []);
+
+  const habitsDone = habits.filter((h) => h.isDone).length;
+  const percent = habits.length
+    ? Math.round((habitsDone / habits.length) * 100)
     : 0;
+  const longestStreak = habits.reduce((max, h) => Math.max(max, h.streak), 0);
+  const activeGoals = goals.filter((g) => g.current < g.target).length;
+  const remaining = habits.filter((h) => !h.isDone);
 
   return (
     <div>
@@ -35,14 +47,14 @@ function DashboardPage() {
         <StatCard
           label="Today"
           value={`${percent}%`}
-          sub={`${summary.habitsDone} of ${summary.habitsTotal} habits done`}
+          sub={`${habitsDone} of ${habits.length} habits done`}
         />
         <StatCard
           label="Longest streak"
-          value={summary.longestStreak}
+          value={longestStreak}
           sub="days in a row"
         />
-        <StatCard label="Active goals" value={summary.goalsActive} />
+        <StatCard label="Active goals" value={activeGoals} />
       </div>
 
       <section className="mt-8">
@@ -57,8 +69,18 @@ function DashboardPage() {
             View all
           </Link>
         </div>
-        <div className="rounded-xl border border-stone-200 bg-white p-4 text-sm text-stone-500">
-          {/* habit preview list goes here */}
+        <div className="rounded-xl border border-stone-200 bg-white p-4">
+          {remaining.length === 0 ? (
+            <p className="text-sm text-stone-500">All habits done. Nice.</p>
+          ) : (
+            <ul className="flex flex-col gap-2">
+              {remaining.map((h) => (
+                <li key={h.id} className="text-sm text-stone-700">
+                  {h.name}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </section>
     </div>
