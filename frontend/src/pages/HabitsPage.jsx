@@ -1,12 +1,13 @@
 import HabitCard from "../components/HabitCard";
 import { useEffect, useState } from "react";
+import { apiFetch } from "../api";
 
 function HabitsPage() {
   const [habits, setHabits] = useState([]);
 
   useEffect(() => {
     async function loadHabits() {
-      const res = await fetch("http://127.0.0.1:8000/habits");
+      const res = await apiFetch("/habits");
       const data = await res.json();
       setHabits(data);
     }
@@ -23,17 +24,14 @@ function HabitsPage() {
     : 0;
 
   async function handleToggle(id) {
-    const res = await fetch(`http://127.0.0.1:8000/habits/${id}/toggle`, {
-      method: "PATCH",
-    });
+    const res = await apiFetch(`/habits/${id}/toggle`, { method: "PATCH" });
+
     const updated = await res.json();
     setHabits(habits.map((habit) => (habit.id === id ? updated : habit)));
   }
 
   async function handleDelete(id) {
-    await fetch(`http://127.0.0.1:8000/habits/${id}`, {
-      method: "DELETE",
-    });
+    await apiFetch(`/habits/${id}`, { method: "DELETE" });
     setHabits(habits.filter((habit) => habit.id !== id));
   }
 
@@ -41,7 +39,7 @@ function HabitsPage() {
     const name = newName.trim();
     if (!name) return;
 
-    const res = await fetch("http://127.0.0.1:8000/habits", {
+    const res = await apiFetch("/habits", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name }),

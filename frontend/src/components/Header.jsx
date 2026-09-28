@@ -1,4 +1,5 @@
 import { Link, NavLink } from "react-router";
+import { useAuth } from "../AuthContext";
 
 const links = [
   { to: "/", label: "Dashboard" },
@@ -8,6 +9,8 @@ const links = [
 ];
 
 function Header() {
+  const { logout } = useAuth();
+  const navigate = useNavigate();
   return (
     <header className="sticky top-0 z-10 border-b border-stone-200 bg-stone-100/80 backdrop-blur">
       <div className="mx-auto flex h-14 w-full max-w-3xl items-center justify-between px-4">
@@ -35,6 +38,15 @@ function Header() {
               {label}
             </NavLink>
           ))}
+          <button
+            onClick={() => {
+              logout();
+              navigate("/login");
+            }}
+            className="text-xs text-stone-500 hover:text-stone-900"
+          >
+            Log out
+          </button>
         </nav>
       </div>
     </header>
