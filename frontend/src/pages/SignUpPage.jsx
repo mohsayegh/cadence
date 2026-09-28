@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router";
 import { useAuth } from "../AuthContext";
 
-const BASE = "http://127.0.0.1:8000";
+import { BASE } from "../api";
 
 function SignupPage() {
   const [email, setEmail] = useState("");

@@ -1,3 +1,4 @@
+import { apiFetch } from "../api";
 import GoalCard from "../components/GoalCard";
 import { useEffect, useState } from "react";
 
@@ -9,7 +10,7 @@ function GoalsPage() {
 
   useEffect(() => {
     async function loadGoals() {
-      const res = await fetch("http://127.0.0.1:8000/goals");
+      const res = await apiFetch("/goals");
       const data = await res.json();
       setGoals(data);
     }
@@ -17,7 +18,7 @@ function GoalsPage() {
   }, []);
 
   async function handleIncrement(id) {
-    const res = await fetch(`http://127.0.0.1:8000/goals/${id}/increment`, {
+    const res = await apiFetch(`/goals/${id}/increment`, {
       method: "PATCH",
     });
     const updated = await res.json();
@@ -25,7 +26,7 @@ function GoalsPage() {
   }
 
   async function handleDelete(id) {
-    await fetch(`http://127.0.0.1:8000/goals/${id}`, {
+    await apiFetch(`/goals/${id}`, {
       method: "DELETE",
     });
     setGoals(goals.filter((goal) => goal.id !== id));
@@ -36,7 +37,7 @@ function GoalsPage() {
     const target = Number(newTarget);
     if (!title || !target) return;
 
-    const res = await fetch("http://127.0.0.1:8000/goals", {
+    const res = await apiFetch("/goals", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title, target, dueDate: newDueDate || null }),

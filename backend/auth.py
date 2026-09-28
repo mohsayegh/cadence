@@ -1,3 +1,4 @@
+import os
 from datetime import datetime, timedelta, timezone
 import jwt
 from jwt import PyJWTError
@@ -10,7 +11,7 @@ import bcrypt
 
 
 # --- config ---
-SECRET_KEY = "change-this-to-a-long-random-string"
+SECRET_KEY = os.environ.get("SECRET_KEY", "dev-only-secret-do-not-use-in-prod")
 ALGORITHM = "HS256"
 TOKEN_EXPIRE_MINUTES = 60 * 24  # one day
 

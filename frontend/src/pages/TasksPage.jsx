@@ -1,3 +1,4 @@
+import { apiFetch } from "../api";
 import TaskCard from "../components/TaskCard";
 import { useEffect, useState } from "react";
 
@@ -13,7 +14,7 @@ function TasksPage() {
 
   useEffect(() => {
     async function loadTasks() {
-      const res = await fetch("http://127.0.0.1:8000/tasks");
+      const res = await apiFetch("/tasks");
       const data = await res.json();
       setTasks(data);
     }
@@ -26,7 +27,7 @@ function TasksPage() {
   const doneCount = tasks.filter((task) => task.isDone).length;
 
   async function handleToggle(id) {
-    const res = await fetch(`http://127.0.0.1:8000/tasks/${id}/toggle`, {
+    const res = await apiFetch(`/tasks/${id}/toggle`, {
       method: "PATCH",
     });
     const updated = await res.json();
@@ -34,7 +35,7 @@ function TasksPage() {
   }
 
   async function handleDelete(id) {
-    await fetch(`http://127.0.0.1:8000/tasks/${id}`, {
+    await apiFetch(`/tasks/${id}`, {
       method: "DELETE",
     });
     setTasks(tasks.filter((task) => task.id !== id));
@@ -44,7 +45,7 @@ function TasksPage() {
     const title = newTitle.trim();
     if (!title) return;
 
-    const res = await fetch("http://127.0.0.1:8000/tasks", {
+    const res = await apiFetch("/tasks", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title }),

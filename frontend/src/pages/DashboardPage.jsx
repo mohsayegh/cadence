@@ -1,3 +1,4 @@
+import { apiFetch } from "../api";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import StatCard from "../components/StatCard";
@@ -15,8 +16,8 @@ function DashboardPage() {
   useEffect(() => {
     async function loadData() {
       const [habitsRes, goalsRes] = await Promise.all([
-        fetch("http://127.0.0.1:8000/habits"),
-        fetch("http://127.0.0.1:8000/goals"),
+        apiFetch("/habits"),
+        apiFetch("/goals"),
       ]);
       setHabits(await habitsRes.json());
       setGoals(await goalsRes.json());
